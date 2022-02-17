@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.jakewharton.butterknife'
 
-def AAVersion = '4.5.2'
-def SupportLibVersion = '28.0.0'
+def SupportLibVersion = '31.0.0'
 
 configurations.all {
     resolutionStrategy {
@@ -38,9 +38,9 @@ android {
         }
     }
     compileOptions {
+        encoding = 'utf-8'
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-        encoding = 'utf-8'
     }
     lintOptions {
         abortOnError false
@@ -103,15 +103,15 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
     // Android Annotations
-    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
-    implementation "org.androidannotations:androidannotations-api:$AAVersion"
+    kapt "org.androidannotations:androidannotations:4.8.0"
+    api "org.androidannotations:androidannotations-api:4.8.0"
     // ButterKnife
-    implementation('com.jakewharton:butterknife:9.0.0-rc2', {
+    implementation('com.jakewharton:butterknife:10.2.3', {
         exclude group: 'com.android.support'
     })
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc2'
+    kapt 'com.jakewharton:butterknife-compiler:10.2.3'
     // Android supports
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha01'
     implementation 'androidx.multidex:multidex:2.0.0'
@@ -171,10 +171,7 @@ dependencies {
     })
     // Android job
     implementation 'com.evernote:android-job:1.2.6'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
-    // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
     implementation project(':automator')
     implementation project(':common')
     implementation project(':autojs')
