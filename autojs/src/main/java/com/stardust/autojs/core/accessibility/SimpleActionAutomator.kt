@@ -203,6 +203,13 @@ class SimpleActionAutomator(private val mAccessibilityBridge: AccessibilityBridg
 
     @ScriptInterface
     @RequiresApi(api = Build.VERSION_CODES.N)
+    fun click(rect: Rect): Boolean {
+        prepareForGesture()
+        return mGlobalActionAutomator.click(rect.centerX(), rect.centerY())
+    }
+
+    @ScriptInterface
+    @RequiresApi(api = Build.VERSION_CODES.N)
     fun press(x: Int, y: Int, delay: Int): Boolean {
         prepareForGesture()
         return mGlobalActionAutomator.press(x, y, delay)
