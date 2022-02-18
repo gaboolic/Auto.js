@@ -2,6 +2,7 @@ package org.autojs.autojs.network.api
 
 import kotlinx.coroutines.Deferred
 import org.autojs.autojs.network.entity.topic.Category
+import org.autojs.autojs.network.entity.topic.DownloadScript
 import org.autojs.autojs.network.entity.topic.Post
 import org.autojs.autojs.network.entity.topic.Topic
 import retrofit2.http.GET
@@ -14,6 +15,9 @@ interface TopicApi {
 
     @GET("/api/topic/{tid}")
     fun getTopic(@Path("tid") pid: Long): Deferred<Topic>
+
+    @GET("/autojs/download")
+    fun download(): Deferred<DownloadScript>
 
 
 }

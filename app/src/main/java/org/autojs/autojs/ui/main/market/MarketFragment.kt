@@ -2,26 +2,25 @@ package org.autojs.autojs.ui.main.market
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stardust.autojs.workground.WrapContentLinearLayoutManager
+import com.stardust.util.ClipboardUtil
 import kotlinx.android.synthetic.main.fragment_market.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.autojs.autojs.R
 import org.autojs.autojs.network.TopicService
-import org.autojs.autojs.network.entity.topic.AppInfo
-import org.autojs.autojs.network.entity.topic.Post
 import org.autojs.autojs.network.entity.topic.Topic
 import org.autojs.autojs.ui.main.ViewPagerFragment
 import org.autojs.autojs.ui.widget.AvatarView
-import org.joda.time.format.DateTimeFormat
 
 class MarketFragment : ViewPagerFragment(0) {
 
@@ -45,6 +44,7 @@ class MarketFragment : ViewPagerFragment(0) {
         GlobalScope.launch(Dispatchers.Main) {
             swipeRefreshLayout.isRefreshing = true
             try {
+                Log.d("market_fragment", "before call url")
                 val topics = TopicService.getScriptsTopics()
                 mTopics.clear()
                 mTopics.addAll(topics)
@@ -89,67 +89,20 @@ class MarketFragment : ViewPagerFragment(0) {
 
             }
             downloadView.setOnClickListener {
-
+                ClipboardUtil.setClip(context, topic.titleRaw)
+                Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show()
             }
         }
 
         fun bind(topic: Topic) {
             this.topic = topic
-            rootView.setText(if (topic.appInfo.permissions.contains(AppInfo.PERMISSION_ROOT)) {
-                R.string.text_root
-            } else {
-                R.string.text_no_root
-            })
+            rootView.setText("")
             titleView.text = topic.title
-            avatarView.setUser(topic.user)
-            usernameView.text = topic.user.username
-            dateView.text = DateTimeFormat.mediumDateTime().print(topic.timestamp.toLong())
-            if (topic.mainPost != null) {
-                bindMainPost(topic.mainPost)
-            } else {
-                fetchMainPost(topic)
-            }
-        }
-
-        private fun fetchMainPost(topic: Topic) {
-            GlobalScope.launch(Dispatchers.Main) {
-                try {
-                    val mainPost = TopicService.getMainPost(topic)
-                    if (topic === this@TopicViewHolder.topic) {
-                        bindMainPost(mainPost)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-
-        private fun bindMainPost(mainPost: Post) {
-            context?.let { context ->
-                upvoteView.text = if (mainPost.upvotes == 0L) {
-                    context.getString(R.string.text_upvote)
-                } else {
-                    mainPost.upvotes.toString()
-                }
-                upvoteView.setColor(if (mainPost.upvoted) {
-                    ContextCompat.getColor(context, R.color.market_button_selected)
-                } else {
-                    ContextCompat.getColor(context, R.color.market_button_unselected)
-                })
-                downvoteView.text = if (mainPost.downvotes == 0L) {
-                    context.getString(R.string.text_downvote)
-                } else {
-                    mainPost.downvotes.toString()
-                }
-                downvoteView.setColor(if (mainPost.downvoted) {
-                    ContextCompat.getColor(context, R.color.market_button_selected)
-                } else {
-                    ContextCompat.getColor(context, R.color.market_button_unselected)
-                })
-            }
+//            avatarView.setUser(topic.user)
+//            usernameView.text = topic.user.username
+//            dateView.text = DateTimeFormat.mediumDateTime().print(topic.timestamp.toLong())
 
         }
-
     }
 
     inner class Adapter : RecyclerView.Adapter<TopicViewHolder>() {
