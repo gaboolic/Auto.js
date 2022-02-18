@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.jakewharton.butterknife'
 
-def SupportLibVersion = '31.0.0'
+def SupportLibVersion = '29.0.0'
 
 configurations.all {
     resolutionStrategy {
@@ -15,7 +15,6 @@ configurations.all {
 
 android {
     compileSdkVersion versions.compile
-    buildToolsVersion versions.buildTool
     defaultConfig {
         applicationId "org.autojs.autojs"
         minSdkVersion versions.mini

@@ -37,9 +37,8 @@ ext {
     versions = [
         appVersionCode: 461,
         appVersionName: "4.1.1 Alpha2",
-        target: 31,
+        target: 29,
         mini: 21,
         compile: 31,
-        buildTool: "29.0.2"
     ]
 }
