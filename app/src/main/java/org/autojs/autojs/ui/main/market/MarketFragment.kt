@@ -26,7 +26,11 @@ class MarketFragment : ViewPagerFragment(0) {
 
     private val mTopics = ArrayList<Topic>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_market, container, false)
     }
 
@@ -45,7 +49,7 @@ class MarketFragment : ViewPagerFragment(0) {
             swipeRefreshLayout.isRefreshing = true
             try {
                 Log.d("market_fragment", "before call url")
-                val topics = TopicService.getScriptsTopics()
+                val topics = TopicService.getScriptsTopics2()
                 mTopics.clear()
                 mTopics.addAll(topics)
                 topicsView.adapter!!.notifyDataSetChanged()
@@ -107,7 +111,9 @@ class MarketFragment : ViewPagerFragment(0) {
 
     inner class Adapter : RecyclerView.Adapter<TopicViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
-            return TopicViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false))
+            return TopicViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_topic, parent, false)
+            )
         }
 
         override fun getItemCount(): Int {
